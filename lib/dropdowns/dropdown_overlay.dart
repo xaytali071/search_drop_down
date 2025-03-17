@@ -142,7 +142,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                                 ),
                               //  CustomTextFormField(hint: "hint"),
                                 SearchField(searchHintText: 'Qidruv', onChanged: widget.onSearching),
-
+                              widget.isLoading ? CircularProgressIndicator():
                                 Expanded(
                                   child: ListView.builder(
                                       itemCount: widget.list.length,
