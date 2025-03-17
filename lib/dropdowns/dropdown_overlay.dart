@@ -12,6 +12,7 @@ class _DropdownOverlay extends StatefulWidget {
   final ValueChanged? onItemSelect;
   final List list;
   final ValueChanged? onSearching;
+  final bool isLoading;
 
   const _DropdownOverlay({
     required this.controller,
@@ -24,7 +25,7 @@ class _DropdownOverlay extends StatefulWidget {
     required this.onItemSelect,
     required this.validator,
     required this.list,
-    required this.onSearching
+    required this.onSearching, required this.isLoading
   });
 
   @override
@@ -141,6 +142,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                                 ),
                               //  CustomTextFormField(hint: "hint"),
                                 SearchField(searchHintText: 'Qidruv', onChanged: widget.onSearching),
+
                                 Expanded(
                                   child: ListView.builder(
                                       itemCount: widget.list.length,

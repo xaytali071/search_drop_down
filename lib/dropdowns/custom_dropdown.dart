@@ -24,6 +24,7 @@ class CustomDropdown extends StatefulWidget {
   final ValueChanged? onSearching;
   final String? Function(String?)? validator;
   final List list;
+  final bool isLoading;
 
   const CustomDropdown({
     super.key,
@@ -38,6 +39,7 @@ class CustomDropdown extends StatefulWidget {
     this.isClear,
     required this.onSearching,
     required this.list,
+    required this.isLoading
   });
 
   @override
@@ -75,7 +77,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             initialId: widget.initialId,
             onItemSelect: widget.onSelected,
             onSearching: widget.onSearching,
-            list: widget.list,
+            list: widget.list, isLoading: widget.isLoading,
           );
         }, child: (void Function() showCallback) {
       if (widget.isClear ?? false) {
