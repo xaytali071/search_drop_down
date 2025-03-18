@@ -45,7 +45,12 @@ class _SearchFieldState extends State<SearchField> {
         height: 48,
         child: TextField(
           controller: searchCtrl,
-          onChanged:widget.onChanged,
+          onChanged: (value) {
+            setState(() {
+              widget.onChanged!(value);
+            });
+            debugPrint('===> search field value: $value');
+          },
           cursorWidth: 1,
           cursorColor: CustomStyle.textHint,
 
