@@ -27,6 +27,7 @@ class CustomDropdown extends StatefulWidget {
   final ValueChanged onSearching;
   final String noData;
   final Widget loadingWidget;
+  final bool isLoading;
 
   const CustomDropdown({
     super.key,
@@ -43,6 +44,7 @@ class CustomDropdown extends StatefulWidget {
     required this.onSearching,
     this.noData = "No data",
     this.loadingWidget = const CircularProgressIndicator(),
+     this.isLoading=false,
 
   });
 
@@ -85,6 +87,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             onSearching: widget.onSearching,
             loadingWidget: widget.loadingWidget,
             noData: widget.noData,
+            isLoading: widget.isLoading,
           );
         }, child: (void Function() showCallback) {
       if (widget.isClear ?? false) {
