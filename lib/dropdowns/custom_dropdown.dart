@@ -1,6 +1,5 @@
 export 'custom_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:search_drop_down/custom_text_form_field.dart';
 import 'package:search_drop_down/dropdowns/style.dart';
 
 import 'category_overlay.dart';

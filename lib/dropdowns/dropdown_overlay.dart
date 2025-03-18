@@ -143,7 +143,10 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                                 ),
                               ),
 
-                             CustomTextFormField(hint: "sdf",onChanged: widget.onSearching),
+                              SearchField(
+                                searchHintText: widget.hintText,
+                                onChanged: widget.onSearching,
+                              ),
                               widget.isLoading
                                   ? Center(
                                     child: Column(
