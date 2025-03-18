@@ -67,7 +67,7 @@ class _SearchFieldState extends State<SearchField> {
             ),
             suffixIcon: IconButton(
               icon: Icon(
-                Icons.close,
+                Icons.cancel_outlined,
                 size: 20,
               ),
               splashColor: CustomStyle.transparent,

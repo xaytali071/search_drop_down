@@ -161,7 +161,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                                     ),
                                   )
                                   : widget.list.isEmpty
-                                  ? Text(widget.noData)
+                                  ? Center(child: Text(widget.noData))
                                   : Expanded(
                                     child: ListView.builder(
                                       itemCount: widget.list.length,
