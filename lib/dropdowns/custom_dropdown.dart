@@ -84,7 +84,10 @@ class _CustomDropdownState extends State<CustomDropdown> {
             onItemSelect: widget.onSelected,
             list: widget.list,
             title: widget.title,
-            onSearching: widget.onSearching.call,
+            onSearching: (d){
+              widget.onSearching.call(d);
+              setState(() {});
+            },
             loadingWidget: widget.loadingWidget,
             noData: widget.noData,
             isLoading: widget.isLoading,
