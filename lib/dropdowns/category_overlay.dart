@@ -46,8 +46,9 @@ class _SearchFieldState extends State<SearchField> {
         child: TextField(
           controller: searchCtrl,
           onChanged: (value) {
-            widget.onChanged!(value);
-            setState(() {});
+            setState(() {
+              widget.onChanged!.call(value);
+            });
             debugPrint('===> search field value: $value');
           },
           cursorWidth: 1,

@@ -145,10 +145,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
 
                               SearchField(
                                 searchHintText: widget.hintText,
-                                onChanged:(d){
-                                  widget.onSearching(d);
-                                  setState(() {});
-                                }
+                                onChanged: widget.onSearching,
                               ),
                               widget.isLoading
                                   ? Center(

@@ -14,7 +14,7 @@ class _DropDownField extends StatefulWidget {
     this.hintText,
     this.label,
     this.validator,
-    this.borderColor=Colors.grey,
+    this.borderColor = Colors.grey,
   });
 
   @override
@@ -52,60 +52,57 @@ class _DropDownFieldState extends State<_DropDownField> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (widget.label != null)
-            Padding(
-              padding: EdgeInsets.only(right: 6, bottom: 4),
-              child: Text(
-                "",
-              ),
-            ),
-          TextFormField(
-            controller: widget.controller,
-            readOnly: true,
-            onTap: widget.onTap,
-            validator: widget.validator,
-            decoration: InputDecoration(
-              suffixIcon: IconButton(
-                onPressed: widget.controller.text.isNotEmpty &&
-                        widget.validator == null
-                    ? () {
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label != null)
+          Padding(
+            padding: EdgeInsets.only(right: 6, bottom: 4),
+            child: Text(""),
+          ),
+        TextFormField(
+          controller: widget.controller,
+          readOnly: true,
+          onTap: widget.onTap,
+          validator: widget.validator,
+          decoration: InputDecoration(
+            suffixIcon: IconButton(
+              onPressed:
+                  widget.controller.text.isNotEmpty && widget.validator == null
+                      ? () {
                         widget.controller.clear();
                         setState(() {});
                       }
-                    : null,
-                icon: Icon(
-                  widget.controller.text.isNotEmpty && widget.validator == null
-                      ? Icons.keyboard_arrow_up_outlined
-                      : Icons.keyboard_arrow_down,
+                      : null,
+              icon: Icon(
+                widget.controller.text.isNotEmpty && widget.validator == null
+                    ? Icons.keyboard_arrow_up_outlined
+                    : Icons.keyboard_arrow_down,
 
-                  size: 18,
-                ),
+                size: 18,
               ),
-              enabledBorder: _border(),
-              errorBorder: _border(),
-              border: _border(),
-              focusedErrorBorder: _border(),
-              disabledBorder: _border(),
-              focusedBorder: _border(),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              hintText: widget.hintText ?? '',
-              hoverColor: CustomStyle.transparent,
-
             ),
+            enabledBorder: _border(),
+            errorBorder: _border(),
+            border: _border(),
+            focusedErrorBorder: _border(),
+            disabledBorder: _border(),
+            focusedBorder: _border(),
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            hintText: widget.hintText ?? '',
+            hoverColor: CustomStyle.transparent,
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 
   _border() {
     return OutlineInputBorder(
-        borderSide: BorderSide.merge(
-          BorderSide(color: widget.borderColor,width: 0.5),
-          BorderSide(color: widget.borderColor,width: 0.5),
-        ),
-        borderRadius: BorderRadius.circular(12));
+      borderSide: BorderSide.merge(
+        BorderSide(color: widget.borderColor, width: 0.5),
+        BorderSide(color: widget.borderColor, width: 0.5),
+      ),
+      borderRadius: BorderRadius.circular(12),
+    );
   }
 }
