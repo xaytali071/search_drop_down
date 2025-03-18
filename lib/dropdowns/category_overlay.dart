@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:search_drop_down/dropdowns/style.dart';
 
-import 'dropdown_item_data.dart';
-
 
 class SearchField extends StatefulWidget {
   final String searchHintText;
@@ -52,12 +50,13 @@ class _SearchFieldState extends State<SearchField> {
             debugPrint('===> search field value: $value');
           },
           cursorWidth: 1,
+          cursorColor: CustomStyle.textHint,
 
           decoration: InputDecoration(
             filled: true,
             fillColor: widget.filledColor,
             constraints: BoxConstraints.tightFor(height: 30),
-            hoverColor: Colors.transparent,
+            hoverColor: CustomStyle.transparent,
             hintText: widget.searchHintText,
             contentPadding: EdgeInsets.zero,
 
@@ -71,8 +70,8 @@ class _SearchFieldState extends State<SearchField> {
                 Icons.close,
                 size: 20,
               ),
-              splashColor: Colors.transparent,
-              hoverColor: Colors.transparent,
+              splashColor: CustomStyle.transparent,
+              hoverColor: CustomStyle.transparent,
               onPressed: onClear,
             ),
             enabledBorder: _border(widget.borderColor),
@@ -98,58 +97,3 @@ class _SearchFieldState extends State<SearchField> {
   }
 }
 
-class _ItemsList extends StatelessWidget {
-  final ScrollController scrollController;
-  final List<DropDownItemData> items;
-  final ValueSetter<DropDownItemData> onItemSelect;
-
-  const _ItemsList({
-    required this.scrollController,
-    required this.items,
-    required this.onItemSelect,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scrollbar(
-      controller: scrollController,
-      child: ListView.builder(
-        controller: scrollController,
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemCount: items.length,
-        itemBuilder: (_, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    onTap: () => onItemSelect(items[index]),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      width: double.infinity,
-                      child: Text(
-                        items[index].title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ),
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: CustomStyle.border,
-                )
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-}

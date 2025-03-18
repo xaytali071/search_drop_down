@@ -58,7 +58,7 @@ class _DropDownFieldState extends State<_DropDownField> {
             Padding(
               padding: EdgeInsets.only(right: 6, bottom: 4),
               child: Text(
-                "fgrh",
+                "",
               ),
             ),
           TextFormField(
@@ -77,18 +77,18 @@ class _DropDownFieldState extends State<_DropDownField> {
                     : null,
                 icon: Icon(
                   widget.controller.text.isNotEmpty && widget.validator == null
-                      ? Icons.keyboard_arrow_up
+                      ? Icons.keyboard_arrow_up_outlined
                       : Icons.keyboard_arrow_down,
 
                   size: 18,
                 ),
               ),
-              enabledBorder: _border(widget.borderColor),
-              errorBorder: _border(widget.borderColor),
-              border: _border(widget.borderColor),
-              focusedErrorBorder: _border(widget.borderColor),
-              disabledBorder: _border(widget.borderColor),
-              focusedBorder: _border(widget.borderColor),
+              enabledBorder: _border(),
+              errorBorder: _border(),
+              border: _border(),
+              focusedErrorBorder: _border(),
+              disabledBorder: _border(),
+              focusedBorder: _border(),
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               hintText: widget.hintText ?? '',
@@ -100,11 +100,11 @@ class _DropDownFieldState extends State<_DropDownField> {
       );
   }
 
-  _border(Color color) {
+  _border() {
     return OutlineInputBorder(
         borderSide: BorderSide.merge(
-          BorderSide(color: color,width: 0.5),
-          BorderSide(color: color,width: 0.5),
+          BorderSide(color: widget.borderColor,width: 0.5),
+          BorderSide(color: widget.borderColor,width: 0.5),
         ),
         borderRadius: BorderRadius.circular(12));
   }

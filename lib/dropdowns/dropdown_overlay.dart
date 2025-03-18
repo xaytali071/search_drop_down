@@ -11,8 +11,11 @@ class _DropdownOverlay extends StatefulWidget {
   final ValueChanged<int?>? onChanged;
   final ValueChanged? onItemSelect;
   final List list;
-  final ValueChanged? onSearching;
+  final String title;
+  final ValueChanged onSearching;
   final bool isLoading;
+  final String noData;
+  final Widget loadingWidget;
 
   const _DropdownOverlay({
     required this.controller,
@@ -25,7 +28,11 @@ class _DropdownOverlay extends StatefulWidget {
     required this.onItemSelect,
     required this.validator,
     required this.list,
-    required this.onSearching, required this.isLoading
+    this.title = "Title",
+    required this.onSearching,
+    this.isLoading = false,
+    this.noData = "No data",
+    this.loadingWidget = const CircularProgressIndicator(),
   });
 
   @override
@@ -64,128 +71,156 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
     final overlayOffset = Offset(-12, displayOverlayBottom ? 0 : 60);
 
     final child = Stack(
-        children: [
-          Positioned(
-            width: 244,
-            child: CompositedTransformFollower(
-              link: widget.layerLink,
-              followerAnchor: displayOverlayBottom
-                  ? Alignment.topLeft
-                  : Alignment.bottomLeft,
-              showWhenUnlinked: false,
-              offset: overlayOffset,
-              child: Container(
-                key: key1,
-                padding: EdgeInsets.only(bottom: 12, left: 12, right: 12),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 24.0,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
-                  ),
-                  child: Material(
-                    color: CustomStyle.white,
-                    child: AnimatedSection(
-                      animationDismissed: widget.hideOverlay,
-                      expand: displayOverly,
-                      axisAlignment: displayOverlayBottom ? 1.0 : -1.0,
-                      child: SizedBox(
-                        key: key2,
-                        height: 300,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: NotificationListener<
-                              OverscrollIndicatorNotification>(
-                            onNotification: (notification) {
-                              notification.disallowIndicator();
-                              return true;
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(14),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          widget.hintText,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+      children: [
+        Positioned(
+          width: 244,
+          child: CompositedTransformFollower(
+            link: widget.layerLink,
+            followerAnchor:
+                displayOverlayBottom ? Alignment.topLeft : Alignment.bottomLeft,
+            showWhenUnlinked: false,
+            offset: overlayOffset,
+            child: Container(
+              key: key1,
+              padding: EdgeInsets.only(bottom: 12, left: 12, right: 12),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(blurRadius: 24.0, offset: const Offset(0, 6)),
+                  ],
+                ),
+                child: Material(
+                  color: CustomStyle.white,
+                  child: AnimatedSection(
+                    animationDismissed: widget.hideOverlay,
+                    expand: displayOverly,
+                    axisAlignment: displayOverlayBottom ? 1.0 : -1.0,
+                    child: SizedBox(
+                      key: key2,
+                      height: 300,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: NotificationListener<
+                          OverscrollIndicatorNotification
+                        >(
+                          onNotification: (notification) {
+                            notification.disallowIndicator();
+                            return true;
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(14),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        widget.title,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      if(!widget.validator)
+                                    ),
+                                    if (!widget.validator)
                                       GestureDetector(
                                         onTap: () {
                                           widget.controller.clear();
                                           widget.onItemSelect?.call(null);
                                           setState(() => displayOverly = false);
                                         },
-                                        child: Text("fr"),
+                                        child: Text("Clear"),
                                       ),
-                                      SizedBox(
-                                        height: 12,
-                                      ),
-                                      Icon(
-                                        displayOverlayBottom
-                                            ? Icons.keyboard_arrow_up_rounded
-                                            : Icons.keyboard_arrow_down_rounded,
-                                        size: 20,
-                                      ),
-                                    ],
-                                  ),
+                                    SizedBox(height: 12),
+                                    Icon(
+                                      displayOverlayBottom
+                                          ? Icons.keyboard_arrow_up_rounded
+                                          : Icons.keyboard_arrow_down_rounded,
+                                      size: 20,
+                                    ),
+                                  ],
                                 ),
-                              //  CustomTextFormField(hint: "hint"),
-                                SearchField(searchHintText: 'Qidruv', onChanged: widget.onSearching),
-                              widget.isLoading ? CircularProgressIndicator():
-                                Expanded(
-                                  child: ListView.builder(
+                              ),
+
+                              SearchField(
+                                searchHintText: widget.hintText,
+                                onChanged: widget.onSearching,
+                              ),
+                              widget.isLoading
+                                  ? Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(height: 30),
+                                        widget.loadingWidget,
+                                      ],
+                                    ),
+                                  )
+                                  : widget.list.isEmpty
+                                  ? Text(widget.noData)
+                                  : Expanded(
+                                    child: ListView.builder(
                                       itemCount: widget.list.length,
                                       shrinkWrap: true,
-                                      itemBuilder: (context,index){
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 12),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Material(
-                                            color: CustomStyle.transparent,
-                                            child: InkWell(
-                                              splashColor: CustomStyle.transparent,
-                                              onTap: (){
-                                                widget.controller.text = widget.list[index];
-                                                widget.onChanged?.call(widget.list[index]);
-                                                widget.onItemSelect != null?(widget.list[index]) : null;
-                                                setState(() => displayOverly = false);
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(vertical: 8),
-                                                width: double.infinity,
-                                                child: Text(
-                                                  widget.list[index],
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Material(
+                                                color: CustomStyle.transparent,
+                                                child: InkWell(
+                                                  splashColor:
+                                                      CustomStyle.transparent,
+                                                  onTap: () {
+                                                    widget.controller.text =
+                                                        widget.list[index];
+                                                    widget.onChanged?.call(
+                                                      widget.list[index],
+                                                    );
+                                                    widget.onItemSelect != null
+                                                        ? (widget.list[index])
+                                                        : null;
+                                                    setState(
+                                                      () =>
+                                                          displayOverly = false,
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                          vertical: 8,
+                                                        ),
+                                                    width: double.infinity,
+                                                    child: Text(
+                                                      widget.list[index],
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                              Divider(
+                                                height: 1,
+                                                thickness: 1,
+                                                color: CustomStyle.border,
+                                              ),
+                                            ],
                                           ),
-                                          Divider(
-                                            height: 1,
-                                            thickness: 1,
-                                            color: CustomStyle.border,
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                                )
-                              ],
-                            ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                            ],
                           ),
                         ),
                       ),
@@ -195,16 +230,15 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
               ),
             ),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
     return GestureDetector(
       onTap: () => setState(() => displayOverly = false),
       child: Container(color: Colors.transparent, child: child),
     );
   }
-
-
 
   onChanged(value) {
     widget.controller.text = value.title.toString();

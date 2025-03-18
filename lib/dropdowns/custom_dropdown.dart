@@ -1,8 +1,8 @@
 export 'custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:search_drop_down/dropdowns/style.dart';
+
 import 'category_overlay.dart';
-import 'enums.dart';
 
 part 'dropdown_field.dart';
 
@@ -13,7 +13,7 @@ part 'dropdown_overlay.dart';
 part 'overlay_builder.dart';
 
 class CustomDropdown extends StatefulWidget {
-  final String? hintText;
+  final String hintText;
   final String? label;
   final String? searchHintText;
   final String? initialValue;
@@ -21,25 +21,29 @@ class CustomDropdown extends StatefulWidget {
   final bool? isClear;
   final ValueChanged<int?>? onChanged;
   final ValueChanged? onSelected;
-  final ValueChanged? onSearching;
   final String? Function(String?)? validator;
   final List list;
-  final bool isLoading;
+  final String title;
+  final ValueChanged onSearching;
+  final String noData;
+  final Widget loadingWidget;
 
   const CustomDropdown({
     super.key,
-    this.hintText,
-    this.searchHintText,
+    this.hintText="Hint",
+    this.searchHintText="Search",
     this.onChanged,
     this.initialValue,
     this.label,
     this.validator,
     this.initialId,
     this.onSelected,
-    this.isClear,
+    this.isClear, required this.list,
+     this.title="Title",
     required this.onSearching,
-    required this.list,
-    required this.isLoading
+    this.noData = "No data",
+    this.loadingWidget = const CircularProgressIndicator(),
+
   });
 
   @override
@@ -72,12 +76,15 @@ class _CustomDropdownState extends State<CustomDropdown> {
             validator: widget.validator != null,
             layerLink: layerLink,
             hideOverlay: hideCallback,
-            hintText: widget.hintText ?? widget.label ?? '',
+            hintText: widget.searchHintText ?? "",
             onChanged: widget.onChanged,
             initialId: widget.initialId,
             onItemSelect: widget.onSelected,
+            list: widget.list,
+            title: widget.title,
             onSearching: widget.onSearching,
-            list: widget.list, isLoading: widget.isLoading,
+            loadingWidget: widget.loadingWidget,
+            noData: widget.noData,
           );
         }, child: (void Function() showCallback) {
       if (widget.isClear ?? false) {
@@ -88,7 +95,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
         child: _DropDownField(
           controller: controller,
           onTap: showCallback,
-          hintText: "select",
+          hintText: widget.hintText,
           label: widget.label,
           validator: widget.validator,
         ),
